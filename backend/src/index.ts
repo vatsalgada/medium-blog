@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { decode, sign, verify } from 'hono/jwt'
 import { userRouter } from './routes/user';
 import { blogRouter } from './routes/blog';
 
@@ -29,27 +28,8 @@ const app = new Hono<{
 
 
 
-// middleware
-app.use('/api/v1/blog/*', async (c, next) => {
-  try {
-    const jwt = c.req.header('Authorization');
-	if (!jwt) {
-		c.status(401);
-		return c.json({ error: "unauthorized" });
-	}
-	const token = jwt.split(' ')[1];
-	const payload = await verify(token, c.env.JWT_SECRET);
-	if (!payload) {
-		c.status(401);  
-		return c.json({ error: "unauthorized" });
-	}
-	c.set('userId', payload.id);
-  console.log(payload.id)
-	await next()
-  } catch (error) {
-    console.log("error in middleware")
-  }
-	
+app.get('/', async (c) => {
+  return c.text("Hello world, this is Vatsal. This app is the backend for a medium blog. To know more about the app take a look at my github profile: https://github.com/vatsalgada")
 })
 
 

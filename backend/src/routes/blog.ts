@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
-import { sign } from "hono/jwt";
+import { sign, verify } from "hono/jwt";
 
 export const blogRouter = new Hono<{
     Bindings: {
@@ -14,6 +14,29 @@ export const blogRouter = new Hono<{
     
 }>();
 
+
+// middleware
+blogRouter.use('/*', async (c, next) => {
+    try {
+      const jwt = c.req.header('Authorization');
+      if (!jwt) {
+          c.status(401);
+          return c.json({ error: "unauthorized" });
+      }
+      const token = jwt.split(' ')[1];
+      const payload = await verify(token, c.env.JWT_SECRET);
+      if (!payload) {
+          c.status(401);  
+          return c.json({ error: "unauthorized" });
+      }
+      c.set('userId', payload.id);
+    console.log(payload.id)
+      await next()
+    } catch (error) {
+      console.log("error in middleware")
+    }
+      
+  })
 
 blogRouter.post("/", async(c) => {
       try {
@@ -46,7 +69,7 @@ blogRouter.post("/update", async (c) => {
         datasourceUrl: c.env.DATABASE_URL,
       }).$extends(withAccelerate());
         const body = await c.req.json();
-        const postId =  body.postId
+        const postId =  await  body.postId
             const updatedPost = await prisma.post.update({
                 where: {
                     id: postId,
@@ -59,7 +82,7 @@ blogRouter.post("/update", async (c) => {
             }
             )
 
-            return c.json({message: "Post succesfully updated"})
+            return c.json({message: "Post succesfully updated", postId: postId})
       }catch{
         return c.json({error: "error while updating the post"})
       }
