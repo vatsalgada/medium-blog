@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { userRouter } from './routes/user';
 import { blogRouter } from './routes/blog';
+import { cors } from 'hono/cors'
 
 // Create the main Hono app
 const app = new Hono<{
@@ -27,6 +28,7 @@ const app = new Hono<{
 // });
 
 
+app.use('/*', cors())
 
 app.get('/', async (c) => {
   return c.text("Hello world, this is Vatsal. This app is the backend for a medium blog. To know more about the app take a look at my github profile: https://github.com/vatsalgada")

@@ -14,6 +14,35 @@ export const blogRouter = new Hono<{
     
 }>();
 
+blogRouter.get('/', async (c) => {
+  try {
+      const prisma = new PrismaClient({
+          datasourceUrl: c.env?.DATABASE_URL	,
+      }).$extends(withAccelerate());
+  
+      const allPost = await prisma.post.findMany(
+          {
+              select: {
+                  title: true, 
+                  content: true,
+                  id: true,
+                  author: {
+                    select: {
+                      name: true
+                    }
+                  }
+              }
+          }
+      )
+
+  return c.json(allPost)
+  } catch (error) {
+      return c.json({
+          error: "error while fetching all posts"
+      })
+  }
+ 
+})
 
 // middleware
 blogRouter.use('/*', async (c, next) => {
@@ -96,34 +125,20 @@ blogRouter.get('/:id', async (c) => {
 	
 	const post = await prisma.post.findUnique({
 		where: {
-			id
-		}
+      id: parseInt(id)
+		},
+    select: {
+      id: true,
+      title: true,
+      content: true, 
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
 	});
 
 	return c.json(post);
 })
 
-blogRouter.get('/', async (c) => {
-    try {
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env?.DATABASE_URL	,
-        }).$extends(withAccelerate());
-    
-        const allPost = await prisma.post.findMany(
-            {
-                select: {
-                    title: true, 
-                    content: true,
-                    id: true
-                }
-            }
-        )
-
-    return c.json(allPost)
-    } catch (error) {
-        return c.json({
-            error: "error while fetching all posts"
-        })
-    }
-   
-})
