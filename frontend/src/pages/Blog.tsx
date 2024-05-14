@@ -1,5 +1,6 @@
 import { Appbar } from "../components/Appbar"
 import { BlogCard } from "../components/BlogCard"
+import LoadingSkeleton from "../components/LoadingSkeleton";
 import { useBlogs } from "../hooks"
 
 interface BlogInterface {
@@ -16,8 +17,21 @@ export const Blog = () => {
    const {loading, blogs} = useBlogs();
    //console.log(blogs)
     if(loading) {
-        return <div>Loading</div>
-    } else return <div className="">  
+        return <div>
+            <Appbar />
+            <div className="flex justify-center">
+                <div>
+                <LoadingSkeleton />
+            <LoadingSkeleton />
+            <LoadingSkeleton />
+            <LoadingSkeleton />
+            <LoadingSkeleton />
+                </div>
+            </div>
+            
+            </div>
+    }else 
+    return <div className="">  
     <Appbar />
     <div className="flex justify-center">
     <div className="max-w-l">
