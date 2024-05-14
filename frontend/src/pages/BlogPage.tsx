@@ -24,12 +24,12 @@ export const BlogPage = () => {
     return <>
       <Appbar></Appbar>
         <div className="grid grid-cols-12  max-w-screen-2xl p-2 pt-7">
-            <div className="col-span-8 p-2 pt-">
+            <div className="col-span-12 p-2 md:col-span-8" >
                 <div className="text-5xl font-bold ">{blog?.title}</div>
                 <div className="pt-3 text-slate-500">Posted on 16 Aug, 2023</div>
                 <div className="pt-4">{blog?.content}</div>
             </div>
-            <div className="col-span-4">
+            <div className="col-span-4 hidden md:block">
                 <div className="text-gray-600">
                     Author
                 </div>

@@ -43,6 +43,32 @@ blogRouter.get('/', async (c) => {
   }
  
 })
+blogRouter.get('/:id', async (c) => {
+	const id = c.req.param('id');
+	const prisma = new PrismaClient({
+		datasourceUrl: c.env?.DATABASE_URL	,
+	}).$extends(withAccelerate());
+	
+	const post = await prisma.post.findUnique({
+		where: {
+      id: parseInt(id)
+		},
+    select: {
+      id: true,
+      title: true,
+      content: true, 
+      author: {
+        select: {
+          name: true
+        }
+      }
+    }
+	});
+
+	return c.json(post);
+})
+
+
 
 // middleware
 blogRouter.use('/*', async (c, next) => {
@@ -117,28 +143,4 @@ blogRouter.post("/update", async (c) => {
       }
 })
 
-blogRouter.get('/:id', async (c) => {
-	const id = c.req.param('id');
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL	,
-	}).$extends(withAccelerate());
-	
-	const post = await prisma.post.findUnique({
-		where: {
-      id: parseInt(id)
-		},
-    select: {
-      id: true,
-      title: true,
-      content: true, 
-      author: {
-        select: {
-          name: true
-        }
-      }
-    }
-	});
-
-	return c.json(post);
-})
 
