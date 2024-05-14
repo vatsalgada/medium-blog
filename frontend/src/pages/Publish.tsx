@@ -29,7 +29,6 @@ export const Publish = () => {
                             Authorization: "bearer " + localStorage.getItem("token")
                         }
                     });
-                    const newId = await response.data.id
                     console.log(response.data)
                     navigate(`/blog/${response.data.postId}`)
                 }} type="submit" className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">

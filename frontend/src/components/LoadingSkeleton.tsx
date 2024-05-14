@@ -1,20 +1,7 @@
 // LoadingSkeleton.js
-import React from 'react';
 
 const LoadingSkeleton = () => {
-  //return (
-    // <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-md cursor-pointer">
-    //        <div className="border-b border-slate-300 w-screen max-w-screen-md animate-pulse">
-    //   <div className="flex items-center">
-    //     <div className="bg-gray-600 rounded-full w-6 h-6 mr-2"></div>
-    //     <div className="font-thin text-gray-500">Loading...</div>
-    //   </div>
-    //   <div className="font-semibold text-xl pt-2 h-8 bg-gray-500 rounded-lg mb-2"></div>
-    //   <div className="text-md font-thin h-16 bg-gray-500 rounded-lg mb-2"></div>
-     
-    // </div>
-    // </div>
- 
+
  return <div role="status" className="animate-pulse">
         <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-md cursor-pointer">
             <div className="flex">

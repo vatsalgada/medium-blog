@@ -3,14 +3,6 @@ import { BlogCard } from "../components/BlogCard"
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import { useBlogs } from "../hooks"
 
-interface BlogInterface {
-    "content": string;
-    "title": string;
-    "id": number;
-    "author": {
-        "name": string;
-    }
-}
 
 export const Blog = () => { 
     

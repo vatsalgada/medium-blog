@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from "react";
-import { SignupType } from "@vatsalgada/medium-common";
+import { ChangeEvent } from "react";
 
 interface LabelProps {
     label: string;
